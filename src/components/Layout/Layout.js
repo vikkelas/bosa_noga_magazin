@@ -1,19 +1,23 @@
-import React, {useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {Outlet} from "react-router";
-import {Link} from "react-router-dom";
+import {NavLink, Link} from "react-router-dom";
 import './Layout.css'
 import headerLogo from '../../assets/img/header-logo.png'
-import Banner from "../Banner/Banner";
+import Banner from "../Banner";
 
-function Header() {
-    const input  = docu
+function Layout() {
     const [searchInput, setSearchInput] = useState(false)
-    const invisible = searchInput?'': 'invisible'
-    const changeActiveInputHandler = (e)=>{
-        if(searchInput){
-            document.getElementById('search-form').input.focus()
-        }
-        setSearchInput(!searchInput)
+    const inputRef = useRef(null);
+    const formRef = useRef(null);
+    const searchInputRef = useRef(null);
+    searchInputRef.current = searchInput;
+    const focusInput = useCallback(()=>{
+        if(!searchInputRef.current)
+        inputRef.current.focus()},[])
+    const changeActiveInputHandler = ()=>{
+        setSearchInput(!searchInput);
+        formRef.current.classList.toggle('invisible');
+        focusInput();
     }
     return (
         <>
@@ -21,22 +25,22 @@ function Header() {
                 <div className="row">
                     <div className="col">
                         <nav className="navbar navbar-expand-sm navbar-light bg-light">
-                            <Link className="navbar-brand" to="/">
+                            <NavLink className="navbar-brand" to="/">
                                 <img src={headerLogo} alt="Bosa Noga"/>
-                            </Link>
+                            </NavLink>
                             <div className="collapase navbar-collapse" id="navbarMain">
                                 <ul className="navbar-nav mr-auto">
-                                    <li className="nav-item active">
-                                        <Link className="nav-link" to="/">Главная</Link>
+                                    <li className="nav-item">
+                                        <NavLink className="nav-link" to="/">Главная</NavLink>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/catalog.html">Каталог</Link>
+                                        <NavLink className="nav-link" to="/catalog">Каталог</NavLink>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/about.html">О магазине</Link>
+                                        <NavLink className="nav-link" to="/about">О магазине</NavLink>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/contacts.html">Контакты</Link>
+                                        <NavLink className="nav-link" to="/contacts">Контакты</NavLink>
                                     </li>
                                 </ul>
                                 <div>
@@ -47,9 +51,9 @@ function Header() {
                                             <div className="header-controls-cart-menu"/>
                                         </div>
                                     </div>
-                                    <form data-id="search-form"
-                                          className={`header-controls-search-form form-inline `+ invisible}>
-                                        <input className="form-control" placeholder="Поиск"/>
+                                    <form ref={formRef} data-id="search-form"
+                                          className='header-controls-search-form form-inline invisible'>
+                                        <input ref={inputRef} className="form-control" placeholder="Поиск"/>
                                     </form>
                                 </div>
                             </div>
@@ -71,9 +75,9 @@ function Header() {
                         <section>
                             <h5>Информация</h5>
                             <ul className="nav flex-column">
-                                <li className="nav-item"><Link to="/about.html" className="nav-link">О магазине</Link></li>
-                                <li className="nav-item"><Link to="/catalog.html" className="nav-link">Каталог</Link></li>
-                                <li className="nav-item"><Link to="/contacts.html" className="nav-link">Контакты</Link></li>
+                                <li className="nav-item"><Link to="/about" className="nav-link">О магазине</Link></li>
+                                <li className="nav-item"><Link to="/catalog" className="nav-link">Каталог</Link></li>
+                                <li className="nav-item"><Link to="/contacts" className="nav-link">Контакты</Link></li>
                             </ul>
                         </section>
                     </div>
@@ -114,4 +118,4 @@ function Header() {
     )
 }
 
-export default Header;
+export default Layout;
