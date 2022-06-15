@@ -4,7 +4,7 @@ export const fetchCategories = createAsyncThunk(
     'categories/fetchCategories',
     async (_, {rejectWithValue })=>{
         try{
-            const response = await fetch(process.env.REACT_APP_BESTSELLERS);
+            const response = await fetch(process.env.REACT_APP_URL +'/categories');
             if(!response.ok){
                 throw new Error('Страница не найдена')
             }
@@ -21,7 +21,31 @@ const categoriesSlice = createSlice({
     initialState:{
         categoriesList: [],
         activeCategory: 'all',
+        loading: false,
+        error: null,
+    },
+    reducers: {
+        changeActiveCategory(state, action){
+            state.activeCategory = action.payload
+        }
+    },
+    extraReducers: {
+        [fetchCategories.pending]: (state)=>{
+            state.loading = true;
+            state.error = null;
+        },
+        [fetchCategories.fulfilled]: (state, action)=>{
+            state.loading = false;
+            state.categoriesList = action.payload;
+
+        },
+        [fetchCategories.rejected]: (state, action)=>{
+            state.loading = 'rejected';
+            state.error = action.payload;
+        },
     }
+
 })
 
+export const {changeActiveCategory} = categoriesSlice.actions;
 export default categoriesSlice.reducer;
