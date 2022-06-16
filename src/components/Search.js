@@ -18,7 +18,7 @@ const Search = () => {
 
     return (
         <form className="catalog-search-form form-inline">
-            <input className="form-control" onChange={searchChangeHandler} value={searchValue} placeholder="Поиск"/>
+            {/*<input className="form-control" onChange={searchChangeHandler} value={searchValue} placeholder="Поиск"/>*/}
         </form>
     );
 };
