@@ -9,12 +9,12 @@ const Search = () => {
     const {activeCategory} = useSelector(state => state.categories)
     const path = `/items?${activeCategory!=='all'?`categoryId${activeCategory}`:''}${searchValue?`&q=${searchValue}`:''}`
     const reqTime = setTimeout(()=>dispatch(fetchCatalog({path})),1000)
-    const searchChangeHandler = (e)=>{
-        const{value} = e.target;
-        dispatch(viewInput(value))
-        clearTimeout(reqTime)
-
-    }
+    // const searchChangeHandler = (e)=>{
+    //     const{value} = e.target;
+    //     dispatch(viewInput(value))
+    //     clearTimeout(reqTime)
+    //
+    // }
 
     return (
         <form className="catalog-search-form form-inline">
