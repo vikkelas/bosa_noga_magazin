@@ -80,9 +80,6 @@ const catalogSlice = createSlice({
             state.error = action.payload
         }
      }
-
-
-
 })
 export const {clearProducts} = catalogSlice.actions;
 export default catalogSlice.reducer;
