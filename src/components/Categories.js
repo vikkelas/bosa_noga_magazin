@@ -6,18 +6,18 @@ import {clearProducts, fetchCatalog, fetchReplenishmentCatalog} from "../Redux/R
 const Categories = () => {
     const dispatch = useDispatch()
     useEffect(()=>{dispatch(fetchCategories())}, [dispatch])
-    const {activeCategory, categoriesList} = useSelector(state => state.categories)
+    const {categoriesList} = useSelector(state => state.categories)
+    const {searchValue} = useSelector(state=>state.search)
     const changeActiveHandler = (e)=>{
+        const pathSearch = new URLSearchParams({q: searchValue});
         document.querySelectorAll('.categories-link').forEach(item=>item.classList.remove('active'))
         e.currentTarget.querySelector('.categories-link').classList.add('active');
         dispatch(changeActiveCategory(e.currentTarget.id))
         dispatch(clearProducts())
         if(e.currentTarget.id==='all'){
-            console.log(activeCategory)
-            dispatch(fetchCatalog({path: '/items'}))
+            dispatch(fetchCatalog({path: `/items${searchValue?`?${pathSearch}`:''}`}))
         }else{
-            console.log(e.currentTarget.id)
-            dispatch(fetchReplenishmentCatalog({path: `/items?categoryId=${e.currentTarget.id}`}))
+            dispatch(fetchReplenishmentCatalog({path: `/items?categoryId=${e.currentTarget.id}${searchValue?`&${pathSearch}`:''}`}))
         }
 
     }

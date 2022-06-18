@@ -9,8 +9,7 @@ export const fetchBestsellers = createAsyncThunk(
             if(!response.ok){
                 throw new Error('Страница не найдена')
             }
-            const data = await response.json();
-            return data;
+            return await response.json();
         }
         catch (error){
             return rejectWithValue(error.message)

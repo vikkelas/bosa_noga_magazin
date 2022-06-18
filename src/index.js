@@ -7,12 +7,16 @@ import {BrowserRouter} from "react-router-dom";
 import {configureStore} from "@reduxjs/toolkit";
 import rootReducer from "./Redux/Reducer/rootReducer";
 import {Provider} from "react-redux";
+import {createEpicMiddleware} from "redux-observable";
+import Epics from "./Redux/Epics/Epics";
 
-
+const epicMiddleware = createEpicMiddleware();
 const store = configureStore({
     reducer: rootReducer,
+    middleware: (getDefaultMiddleware)=>getDefaultMiddleware().concat(epicMiddleware),
     devTools: true,
 })
+epicMiddleware.run(Epics)
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
