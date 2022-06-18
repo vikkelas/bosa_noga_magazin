@@ -8,8 +8,7 @@ export const fetchCatalog = createAsyncThunk(
             if(!response.ok){
                 throw new Error('Страница не найдена')
             }
-            const data = await response.json();
-            return data;
+            return await response.json();
         }
         catch (error){
             return rejectWithValue(error.message)
@@ -43,7 +42,14 @@ const catalogSlice = createSlice({
     reducers: {
         clearProducts(state){
             state.products = [];
-        }
+        },
+        searchProducts(state, action){
+            state.loading = false;
+            state.products = action.payload;
+        },
+        preloaderActive(state){
+          state.loading = true;
+        },
     },
     extraReducers:{
         [fetchCatalog.pending]: (state)=>{
@@ -81,5 +87,5 @@ const catalogSlice = createSlice({
         }
      }
 })
-export const {clearProducts} = catalogSlice.actions;
+export const {clearProducts, searchProducts, preloaderActive} = catalogSlice.actions;
 export default catalogSlice.reducer;

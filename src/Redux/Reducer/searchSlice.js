@@ -11,12 +11,8 @@ const searchSlice = createSlice({
         viewInput(state,action){
             state.searchValue = action.payload
         },
-        searchRequest(state, action) {
-            state.loading = true
-            state.test = action.payload
-        }
     }
 })
 
 export default searchSlice.reducer;
-export const {viewInput, searchRequest} = searchSlice.actions;
+export const {viewInput} = searchSlice.actions;

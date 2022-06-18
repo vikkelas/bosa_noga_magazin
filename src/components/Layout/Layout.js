@@ -1,23 +1,35 @@
 import React, {useCallback, useRef, useState} from 'react';
-import {Outlet} from "react-router";
+import {Outlet, useNavigate} from "react-router";
 import {NavLink, Link} from "react-router-dom";
 import './Layout.css'
 import headerLogo from '../../assets/img/header-logo.png'
 import Banner from "../Banner";
+import {viewInput} from "../../Redux/Reducer/searchSlice";
+import {useDispatch} from "react-redux";
 
 function Layout() {
-    const [searchInput, setSearchInput] = useState(false)
+    const [searchInput, setSearchInput] = useState('')
     const inputRef = useRef(null);
     const formRef = useRef(null);
-    const searchInputRef = useRef(null);
-    searchInputRef.current = searchInput;
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+
+    const changeInputHandler = (e)=>{
+        const {value} = e.target
+        setSearchInput(value)
+    }
     const focusInput = useCallback(()=>{
-        if(!searchInputRef.current)
+        if(!formRef.current.classList.contains('invisible'))
         inputRef.current.focus()},[])
-    const changeActiveInputHandler = ()=>{
-        setSearchInput(!searchInput);
+
+    const changeActiveInput = ()=>{
         formRef.current.classList.toggle('invisible');
-        focusInput();
+        focusInput()
+        if(searchInput){
+            navigate('/catalog')
+            dispatch(viewInput(searchInput))
+            setSearchInput('')
+        }
     }
     return (
         <>
@@ -45,7 +57,7 @@ function Layout() {
                                 </ul>
                                 <div>
                                     <div className="header-controls-pics">
-                                        <div onClick={changeActiveInputHandler} data-id="search-expander" className="header-controls-pic header-controls-search"/>
+                                        <div onClick={changeActiveInput} data-id="search-expander" className="header-controls-pic header-controls-search"/>
                                         <div className="header-controls-pic header-controls-cart">
                                             <div className="header-controls-cart-full">1</div>
                                             <div className="header-controls-cart-menu"/>
@@ -53,7 +65,7 @@ function Layout() {
                                     </div>
                                     <form ref={formRef} data-id="search-form"
                                           className='header-controls-search-form form-inline invisible'>
-                                        <input ref={inputRef} className="form-control" placeholder="Поиск"/>
+                                        <input ref={inputRef} onChange={changeInputHandler} value={searchInput} className="form-control" placeholder="Поиск"/>
                                     </form>
                                 </div>
                             </div>
