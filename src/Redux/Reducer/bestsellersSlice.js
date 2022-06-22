@@ -7,7 +7,7 @@ export const fetchBestsellers = createAsyncThunk(
         try{
             const response = await fetch(process.env.REACT_APP_URL+'/top-sales');
             if(!response.ok){
-                throw new Error('Страница не найдена')
+                return rejectWithValue('Страница не найдена')
             }
             return await response.json();
         }

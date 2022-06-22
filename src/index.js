@@ -4,25 +4,19 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
-import {configureStore} from "@reduxjs/toolkit";
-import rootReducer from "./Redux/Reducer/rootReducer";
 import {Provider} from "react-redux";
-import {createEpicMiddleware} from "redux-observable";
-import Epics from "./Redux/Epics/Epics";
+import {PersistGate} from "redux-persist/integration/react";
+import store,{persist} from "./Redux/Store";
 
-const epicMiddleware = createEpicMiddleware();
-const store = configureStore({
-    reducer: rootReducer,
-    middleware: (getDefaultMiddleware)=>getDefaultMiddleware().concat(epicMiddleware),
-    devTools: true,
-})
-epicMiddleware.run(Epics)
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
       <BrowserRouter>
           <Provider store={store}>
-              <App />
+              <PersistGate loading={null} persistor={persist}>
+                  <App />
+              </PersistGate>
           </Provider>
       </BrowserRouter>
   </React.StrictMode>

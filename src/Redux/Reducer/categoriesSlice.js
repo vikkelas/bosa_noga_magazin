@@ -6,10 +6,9 @@ export const fetchCategories = createAsyncThunk(
         try{
             const response = await fetch(process.env.REACT_APP_URL +'/categories');
             if(!response.ok){
-                throw new Error('Страница не найдена')
+                rejectWithValue('Страница не найдена');
             }
-            const data = await response.json();
-            return data;
+            return await response.json();
         }
         catch (error){
             return rejectWithValue(error.message)

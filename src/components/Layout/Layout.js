@@ -5,14 +5,15 @@ import './Layout.css'
 import headerLogo from '../../assets/img/header-logo.png'
 import Banner from "../Banner";
 import {viewInput} from "../../Redux/Reducer/searchSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 function Layout() {
     const [searchInput, setSearchInput] = useState('')
     const inputRef = useRef(null);
     const formRef = useRef(null);
     const navigate = useNavigate();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const {basketProducts} = useSelector(state => state.basket)
 
     const changeInputHandler = (e)=>{
         const {value} = e.target
@@ -58,8 +59,8 @@ function Layout() {
                                 <div>
                                     <div className="header-controls-pics">
                                         <div onClick={changeActiveInput} data-id="search-expander" className="header-controls-pic header-controls-search"/>
-                                        <div className="header-controls-pic header-controls-cart">
-                                            <div className="header-controls-cart-full">1</div>
+                                        <div onClick={()=>navigate('/cart')} className="header-controls-pic header-controls-cart">
+                                            {basketProducts.length>0&&<div className="header-controls-cart-full">{basketProducts.length}</div>}
                                             <div className="header-controls-cart-menu"/>
                                         </div>
                                     </div>

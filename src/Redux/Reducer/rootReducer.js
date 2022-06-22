@@ -4,6 +4,9 @@ import categoriesSlice from "./categoriesSlice";
 import catalogSlice from "./catalogSlice";
 import searchSlice from "./searchSlice";
 import productSlice from "./productSlice";
+import basketSlice from "./basketSlice";
+import orderSlice from "./orderSlice";
+
 
 const rootReducer = combineReducers({
     bestsellers:  bestsellersSlice,
@@ -11,6 +14,8 @@ const rootReducer = combineReducers({
     catalog: catalogSlice,
     search: searchSlice,
     product: productSlice,
+    basket: basketSlice,
+    order: orderSlice,
 })
 
 export default rootReducer;

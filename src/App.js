@@ -7,6 +7,7 @@ import Error404 from "./pages/Error404";
 import Contacts from "./pages/Contacts";
 import CatalogPage from "./pages/CatalogPage";
 import Product from "./components/Product";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
@@ -18,7 +19,9 @@ function App() {
                <Route path='/contacts' element={<Contacts/>}/>
                <Route path='/catalog' element={<CatalogPage/>}/>
                 <Route path='/catalog/:id' element={<Product/>}/>
+               <Route path ='/cart' element={<Cart/>}/>
                <Route path='/404' element={<Error404/>}/>
+               <Route path='*' element={<Error404/>}/>
             </Route>
         </Routes>
     </>

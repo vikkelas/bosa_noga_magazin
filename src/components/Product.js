@@ -1,9 +1,16 @@
 import React, {useEffect} from 'react';
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
-import {changeActiveSize, countDec, countInc, fetchProduct} from "../Redux/Reducer/productSlice";
+import {
+    changeActiveSize,
+    countDec,
+    countInc,
+    fetchProduct,
+    stateProductReset
+} from "../Redux/Reducer/productSlice";
 import Preloader from "./Preloader";
 import Error404 from "../pages/Error404";
+import {addProductBasket} from "../Redux/Reducer/basketSlice";
 
 const Product = () => {
     const btnStyle = {
@@ -11,6 +18,7 @@ const Product = () => {
     }
     const dispatch = useDispatch();
     const {id} = useParams();
+    const navigate = useNavigate();
     useEffect(()=>{dispatch(fetchProduct({id}))}, [id, dispatch])
     const {product, loading, images,activeSize, sizes,count, error} = useSelector(state => state.product);
     const changeSizeActive = (e)=>{
@@ -21,16 +29,31 @@ const Product = () => {
         dispatch(changeActiveSize(e.target.textContent))
 
     }
+    const addProductCartHandler = ()=>{
+        dispatch(addProductBasket({
+            id: Number(id),
+            count,
+            size: activeSize,
+            price: product.price,
+            title: product.title,
+            order: activeSize+id
+        }))
+        dispatch(stateProductReset());
+        document.querySelectorAll('.catalog-item-size').forEach(item=>{
+            item.classList.remove('selected')
+        })
+        navigate('/cart');
+    }
+    if(loading === 'rejected'){
+        return(
+            <Error404 message={error}/>
+        )
+    }
     if(loading){
         return (
             <div className='row'>
                 <Preloader/>
             </div>
-        )
-    }
-    if(loading === 'rejected'){
-        return(
-            <Error404 message={error}/>
         )
     }
     if(product){
@@ -85,7 +108,7 @@ const Product = () => {
                             </span>
                             </p>
                         </div>
-                        <button style={btnStyle} disabled={activeSize&&count>0?'':true} className="btn btn-danger btn-block btn-lg">В корзину</button>
+                        <button onClick={addProductCartHandler} style={btnStyle} disabled={activeSize&&count>0?'':true} className="btn btn-danger btn-block btn-lg">В корзину</button>
                     </div>
                 </div>
             </section>

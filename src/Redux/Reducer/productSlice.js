@@ -6,7 +6,7 @@ export const fetchProduct = createAsyncThunk(
         try{
             const response = await fetch(`${process.env.REACT_APP_URL}/items/${id}`);
             if(!response.ok){
-                rejectWithValue('Товар не найден')
+               return rejectWithValue('Товар не найден')
             }
             return await response.json();
         }
@@ -29,11 +29,18 @@ const productSlice = createSlice({
     },
     reducers:{
         countInc(state){
-            state.count = ++state.count;
+            if (state.count<10){
+                state.count = ++state.count;
+            }
         },
         countDec(state){
-            if(state.count>0)
-            state.count = --state.count;
+            if(state.count>0){
+                state.count = --state.count;
+            }
+        },
+        stateProductReset(state){
+            state.count = 0;
+            state.activeSize = '';
         },
         changeActiveSize(state, action){
             state.activeSize = action.payload;
@@ -57,5 +64,5 @@ const productSlice = createSlice({
     }
 })
 
-export const {countInc, countDec,changeActiveSize} = productSlice.actions;
+export const {countInc, stateProductReset,countDec,changeActiveSize} = productSlice.actions;
 export default productSlice.reducer;

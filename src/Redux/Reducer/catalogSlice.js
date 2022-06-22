@@ -6,7 +6,7 @@ export const fetchCatalog = createAsyncThunk(
         try{
             const response = await fetch(process.env.REACT_APP_URL + path);
             if(!response.ok){
-                throw new Error('Страница не найдена')
+                return rejectWithValue('Страница не найдена');
             }
             return await response.json();
         }
@@ -21,10 +21,9 @@ export const fetchReplenishmentCatalog = createAsyncThunk(
         try{
             const response = await fetch(process.env.REACT_APP_URL + path);
             if(!response.ok){
-                throw new Error('Страница не найдена')
+               return rejectWithValue('Страница не найдена');
             }
-            const data = await response.json();
-            return data;
+            return await response.json();
         }
         catch (error){
             return rejectWithValue(error.message)
