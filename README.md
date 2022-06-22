@@ -1,7 +1,8 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
+## Use stack 
+redux-toolkit, redux-persist, redux-observable, react-router, RXJS, dotenv,
 ## Available Scripts
 
 In the project directory, you can run:
